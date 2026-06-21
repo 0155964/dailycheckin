@@ -1,0 +1,30 @@
+name: 自动签到
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 16 * * *'  # 每天北京时间早上 0:30 执行
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dailycheckin
+        run: |
+          pip install dailycheckin
+
+      - name: Create Config File
+        run: |
+          echo '${{ secrets.CONFIG }}' > config.json
+
+      - name: Run dailycheckin
+        run: |
+          dailycheckin
