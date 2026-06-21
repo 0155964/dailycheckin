@@ -3,7 +3,7 @@ name: 自动签到
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 16 * * *'  # 每天北京时间早上 0:30 执行
+    - cron: '30 16 * * *'
 
 jobs:
   checkin:
@@ -23,7 +23,9 @@ jobs:
 
       - name: Create Config File
         run: |
-          echo '${{ secrets.CONFIG }}' > config.json
+          cat << 'EOF' > config.json
+          ${{ secrets.CONFIG }}
+          EOF
 
       - name: Run dailycheckin
         run: |
